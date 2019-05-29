@@ -3,7 +3,7 @@ const main = document.querySelector(".pdfs");
 for (let i = 1; i < 7; i++) {
   fetch(`https://github.com/herodrigues/open-pdf/raw/master/pdfs/00${i}.pdf`, {
     headers: {
-      "Access-Control-Allow-Origin": "origin-list"
+      "Access-Control-Allow-Origin": "*"
     }
   }).then(response => response.json())
     .then(response => {
