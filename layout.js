@@ -1,21 +1,22 @@
 const main = document.querySelector(".pdfs");
 
-for (let i = 1; i < 7; i++) {
-  fetch(`https://github.com/herodrigues/open-pdf/raw/master/pdfs/00${i}.pdf`, {
-    headers: {
-      "Access-Control-Allow-Origin": "*"
-    }
-  }).then(response => response.json())
-    .then(response => {
-      const object = document.querySelector("#pdf-file");
-      const link = document.createElement("a");
-      const div = document.createElement("div");
+fetch("https://api.github.com/repos/herodrigues/open-pdf/contents/pdfs")
+  .then(response => response.json()).then(response => {
+    response.map(item => {
+      var loadingTask = pdfjsLib.getDocument(item.download_url);
+      loadingTask.promise.then((pdf) => {
+        const main = document.querySelector("main");
+        const div = document.querySelector("#pdf-item");
+        const cln = div.cloneNode(true);
 
-      object.style.display = "block";
-      a.target="_blank";
-      a.appendChild(object);
-      div.appendChild(a);
+        cln.style.display = "block";
+        const link = cln.querySelector("a");
+        const span = cln.querySelector("span");
 
-      main.appendChild(div);
-    });
-}
+        link.onclick = () => window.open(`https://mozilla.github.io/pdf.js/web/viewer.html?file=${item.download_url}`);
+        span.textContent = item.name;
+        main.querySelector("h2").textContent = "";
+        main.appendChild(cln);
+      });
+    })
+  });
